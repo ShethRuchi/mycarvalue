@@ -15,21 +15,21 @@ export class UsersService {
 
   findOne(userId: number) {
     return this.repo.findOneBy({
-        id: userId
+      id: userId,
     });
   }
 
-  getAllUsers(email: string) {
+  find(email: string) {
     return this.repo.find({
       where: {
-        email: email
-      }
-    })
+        email: email,
+      },
+    });
   }
 
   async updateUser(userId: number, userData: Partial<User>) {
     let user = await this.findOne(userId);
-    if(!user) {
+    if (!user) {
       throw new NotFoundException(`user with id: ${userId} not found`);
     }
     Object.assign(user, userData);
@@ -38,11 +38,10 @@ export class UsersService {
 
   async removeUser(userId: number) {
     const user = await this.findOne(userId);
-    if(!user) {
+    if (!user) {
       throw new NotFoundException(`user with id: ${userId} not found`);
     }
 
     return this.repo.remove(user);
   }
-
 }
